@@ -22,6 +22,48 @@ You can just run certinel by invoking it's binary in your $GOPATH/bin. This will
     -db="certinel.db": path to the database store
     -port="8080": port for api server
 
+## Running as a service on OS X
+
+Create a file `org.certinel.plist` in /Library/LaunchDaemons/ 
+
+```html
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
+    "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>org.certinel</string>
+    <key>ServiceDescription</key>
+    <string>Certificate API Sentinel Server</string>
+    <key>Program</key>
+    <string>/Users/yoooov/go-workspace/bin/certinel</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/yoooov/go-workspace/bin/certinel</string>
+        <string>-db</string>
+        <string>/Users/yoooov/dbs/certinel.db</string>
+        <string>-port</string>
+        <string>8080</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+</dict>
+</plist>
+```
+
+Set ownership/permissions:
+ - sudo chown root:wheel /Library/LaunchDaemons/org.certinel.plist   
+
+Load the plist:
+ - sudo launchctl load /Library/LaunchDaemons/org.certinel.plist    
+ 
+Start/Stop the service:
+ - sudo launchctl start/stop org.certinel    
+ 
+To unload plist:
+ - sudo launchctl unload /Library/LaunchDaemons/org.certinel    
+
 ## License
 
 Certinel is licensed under the BSD License. See LICENSE for more information.
